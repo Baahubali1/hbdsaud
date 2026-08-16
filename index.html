@@ -1,0 +1,1039 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>SAUD.EXE — Birthday Incident</title>
+
+<style>
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
+
+    body {
+        font-family: "Courier New", monospace;
+        background: #080808;
+        color: #fff;
+        overflow-x: hidden;
+    }
+
+    button {
+        font-family: inherit;
+        cursor: pointer;
+    }
+
+    /* =========================
+       BOOT SCREEN
+    ========================= */
+
+    #boot {
+        position: fixed;
+        inset: 0;
+        background: #000;
+        z-index: 9999;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        padding: 30px;
+    }
+
+    #terminal {
+        width: min(800px, 95%);
+        color: #00ff66;
+        font-size: 15px;
+        line-height: 1.8;
+    }
+
+    .cursor {
+        animation: blink 0.7s infinite;
+    }
+
+    @keyframes blink {
+        50% { opacity: 0; }
+    }
+
+    #enterBtn {
+        margin-top: 30px;
+        padding: 14px 25px;
+        background: #00ff66;
+        border: none;
+        color: #000;
+        font-weight: bold;
+        display: none;
+    }
+
+    /* =========================
+       MAIN
+    ========================= */
+
+    #main {
+        display: none;
+    }
+
+    section {
+        min-height: 100vh;
+        padding: 80px 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .container {
+        width: min(1000px, 95%);
+        text-align: center;
+    }
+
+    /* =========================
+       HERO
+    ========================= */
+
+    #hero {
+        background:
+            radial-gradient(circle at 20% 20%, #ff0055 0%, transparent 25%),
+            radial-gradient(circle at 80% 80%, #6200ff 0%, transparent 25%),
+            #080808;
+    }
+
+    .warning {
+        color: #ff315c;
+        font-size: 13px;
+        letter-spacing: 3px;
+        margin-bottom: 20px;
+    }
+
+    .hero-title {
+        font-family: Impact, sans-serif;
+        font-size: clamp(70px, 15vw, 180px);
+        line-height: .8;
+        text-transform: uppercase;
+        transform: rotate(-3deg);
+        text-shadow:
+            8px 8px 0 #ff0055,
+            -5px -5px 0 #00ffff;
+    }
+
+    .subtitle {
+        margin-top: 40px;
+        font-size: clamp(16px, 3vw, 25px);
+    }
+
+    .glitch {
+        animation: glitch 1.5s infinite;
+    }
+
+    @keyframes glitch {
+        0%, 90%, 100% {
+            transform: translate(0);
+        }
+
+        92% {
+            transform: translate(-8px, 4px);
+        }
+
+        94% {
+            transform: translate(8px, -4px);
+        }
+
+        96% {
+            transform: translate(-4px, -2px);
+        }
+    }
+
+    /* =========================
+       CARDS
+    ========================= */
+
+    .card {
+        background: #111;
+        border: 2px solid #fff;
+        padding: 35px;
+        margin: 25px 0;
+        box-shadow: 10px 10px 0 #ff0055;
+        transform: rotate(-1deg);
+    }
+
+    .card:nth-child(even) {
+        transform: rotate(1deg);
+        box-shadow: -10px 10px 0 #00ffff;
+    }
+
+    h2 {
+        font-size: clamp(35px, 7vw, 70px);
+        margin-bottom: 25px;
+        text-transform: uppercase;
+    }
+
+    p {
+        font-size: 17px;
+        line-height: 1.8;
+    }
+
+    /* =========================
+       KIM JI WON
+    ========================= */
+
+    #kim {
+        background: linear-gradient(135deg, #19000d, #090018);
+    }
+
+    .kim-meter {
+        width: 100%;
+        height: 40px;
+        border: 2px solid white;
+        margin: 30px 0;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .kim-fill {
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+            90deg,
+            #ff0055,
+            #ff00aa,
+            #7c00ff
+        );
+        animation: pulse 1s infinite alternate;
+    }
+
+    @keyframes pulse {
+        from { opacity: .6; }
+        to { opacity: 1; }
+    }
+
+    .kim-counter {
+        font-size: 50px;
+        font-weight: bold;
+    }
+
+    .photo-wall {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+        gap: 10px;
+        margin-top: 30px;
+    }
+
+    .fake-photo {
+        aspect-ratio: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: linear-gradient(
+            135deg,
+            #ff0055,
+            #6b00ff
+        );
+        font-size: 13px;
+        font-weight: bold;
+        border: 2px solid white;
+        transform: rotate(var(--r));
+    }
+
+    /* =========================
+       SPECTACLES
+    ========================= */
+
+    #spectacles {
+        background: #001010;
+    }
+
+    .timeline {
+        text-align: left;
+        margin-top: 40px;
+    }
+
+    .event {
+        border-left: 5px solid #00ffff;
+        padding: 20px 25px;
+        margin: 20px 0;
+        background: #071414;
+    }
+
+    .event strong {
+        color: #00ffff;
+        font-size: 20px;
+    }
+
+    /* =========================
+       APPLE
+    ========================= */
+
+    #apple {
+        background:
+            radial-gradient(circle, #310000, #070000);
+    }
+
+    .apple {
+        font-size: 120px;
+        animation: appleShake .3s infinite alternate;
+    }
+
+    @keyframes appleShake {
+        from { transform: rotate(-5deg); }
+        to { transform: rotate(5deg); }
+    }
+
+    .danger {
+        color: red;
+        font-weight: bold;
+        font-size: 25px;
+    }
+
+    /* =========================
+       OCEAN
+    ========================= */
+
+    #ocean {
+        background:
+            linear-gradient(#001d3d, #003c66);
+    }
+
+    .water {
+        font-size: 100px;
+        animation: float 3s infinite ease-in-out;
+    }
+
+    @keyframes float {
+        50% {
+            transform: translateY(-20px);
+        }
+    }
+
+    /* =========================
+       KIDS
+    ========================= */
+
+    #kids {
+        background:
+            repeating-linear-gradient(
+                45deg,
+                #1b001b,
+                #1b001b 10px,
+                #290029 10px,
+                #290029 20px
+            );
+    }
+
+    .kids-button {
+        background: #ff0055;
+        border: none;
+        color: white;
+        padding: 20px 30px;
+        font-size: 20px;
+        font-weight: bold;
+        margin-top: 30px;
+    }
+
+    #kidsResponse {
+        margin-top: 30px;
+        font-size: 25px;
+        min-height: 60px;
+    }
+
+    /* =========================
+       FRIENDSHIP
+    ========================= */
+
+    #friendship {
+        background: #101010;
+    }
+
+    .heart {
+        font-size: 80px;
+        animation: heartbeat 1s infinite;
+    }
+
+    @keyframes heartbeat {
+        50% {
+            transform: scale(1.25);
+        }
+    }
+
+    /* =========================
+       FINAL
+    ========================= */
+
+    #final {
+        background:
+            radial-gradient(circle at center, #4b004d, #050005);
+        min-height: 100vh;
+    }
+
+    .birthday {
+        font-family: Impact, sans-serif;
+        font-size: clamp(60px, 13vw, 150px);
+        line-height: .85;
+        text-shadow:
+            6px 6px 0 #ff0055,
+            -5px -5px 0 #00ffff;
+    }
+
+    .final-message {
+        max-width: 750px;
+        margin: 40px auto;
+        font-size: 19px;
+        line-height: 2;
+    }
+
+    .restart {
+        padding: 15px 25px;
+        background: white;
+        color: black;
+        border: none;
+        font-weight: bold;
+    }
+
+    /* =========================
+       CONFETTI
+    ========================= */
+
+    .confetti {
+        position: fixed;
+        width: 10px;
+        height: 10px;
+        top: -20px;
+        z-index: 999;
+        animation: fall linear forwards;
+    }
+
+    @keyframes fall {
+        to {
+            transform:
+                translateY(110vh)
+                rotate(720deg);
+        }
+    }
+
+    /* =========================
+       MOBILE
+    ========================= */
+
+    @media(max-width:600px) {
+
+        section {
+            padding: 60px 15px;
+        }
+
+        .card {
+            padding: 25px;
+        }
+
+        p {
+            font-size: 15px;
+        }
+
+        .hero-title {
+            font-size: 70px;
+        }
+    }
+</style>
+</head>
+
+<body>
+
+<!-- =========================
+     BOOT SCREEN
+========================= -->
+
+<div id="boot">
+
+    <div id="terminal"></div>
+
+    <button id="enterBtn">
+        ⚠️ ENTER AT YOUR OWN RISK ⚠️
+    </button>
+
+</div>
+
+
+<!-- =========================
+     MAIN WEBSITE
+========================= -->
+
+<div id="main">
+
+<!-- HERO -->
+
+<section id="hero">
+
+    <div class="container">
+
+        <div class="warning">
+            ⚠️ CRITICAL SYSTEM ALERT ⚠️
+        </div>
+
+        <div class="hero-title glitch">
+            SAUD
+        </div>
+
+        <div class="subtitle">
+            Birthday.exe has unexpectedly started running.
+        </div>
+
+        <br>
+
+        <p>
+            Please remain calm.<br>
+            This website contains absolutely no useful information.
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- KIM JI WON -->
+
+<section id="kim">
+
+    <div class="container">
+
+        <h2>DIAGNOSTIC REPORT</h2>
+
+        <div class="card">
+
+            <h3>Kim Ji Won Dependency</h3>
+
+            <div class="kim-meter">
+                <div class="kim-fill"></div>
+            </div>
+
+            <div class="kim-counter">
+                999999%
+            </div>
+
+            <p>
+                Pinterest has been scanned.
+                <br><br>
+                Results:
+                <br>
+                ❌ Normal images: 3
+                <br>
+                ❌ Useful content: 0
+                <br>
+                ✅ Kim Ji Won: approximately everything
+            </p>
+
+        </div>
+
+        <div class="photo-wall">
+
+            <div class="fake-photo" style="--r:-4deg">
+                <img src="https://i.pinimg.com/236x/8b/4d/a2/8b4da22e4bc4e8e72610c0cc6ce408bf.jpg" height="300">
+            </div>
+
+            <div class="fake-photo" style="--r:5deg">
+                <img src="https://i.pinimg.com/236x/a7/ea/f3/a7eaf3ba822e82b788fb922345605be8.jpg" height="300">
+            </div>
+
+            <div class="fake-photo" style="--r:-2deg">
+                <img src="https://i.pinimg.com/236x/5d/c6/23/5dc623e0866d3caa009edccfedbb24d0.jpg" height="300"> 
+            </div>
+
+            <div class="fake-photo" style="--r:6deg">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRCnXRIDpe01TcqD2O39N2b-cIE0jeeGf9Sb6ceLL_DIYtqXz5dX2GkC5A&s=10" height="300">
+            </div>
+
+            <div class="fake-photo" style="--r:-6deg">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQaXgGdLGpNOHCKTMKx2Hg5i6K0KLUkhHuJQWCJWhLUeQ&s=10" height="300">
+            </div>
+
+        </div>
+
+        <p style="margin-top:30px">
+            We also discovered that you once made a fashion website
+            where the model was Kim Ji Won and basically every item
+            of clothing was also Kim Ji Won.
+            <br><br>
+            <strong>
+                THAT WAS NOT A FASHION WEBSITE.
+                THAT WAS A KIM JI WON SHRINE WITH CSS.
+            </strong>
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- SPECTACLES -->
+
+<section id="spectacles">
+
+    <div class="container">
+
+        <h2>THE SPECTACLES INCIDENT</h2>
+
+        <div class="card">
+
+            <p>
+                One of the greatest demonstrations of Saud's
+                incredible memory ever recorded.
+            </p>
+
+            <div class="timeline">
+
+                <div class="event">
+                    <strong>FRIDAY</strong>
+                    <br>
+                    Saud loses spectacles.
+                </div>
+
+                <div class="event">
+                    <strong>SATURDAY</strong>
+                    <br>
+                    Saud continues existing.
+                    Spectacles remain missing.
+                </div>
+
+                <div class="event">
+                    <strong>SUNDAY</strong>
+                    <br>
+                    Still no spectacles.
+                    Apparently this is now normal.
+                </div>
+
+                <div class="event">
+                    <strong>MONDAY</strong>
+                    <br>
+                    "Where are my spectacles?"
+                </div>
+
+                <div class="event">
+                    <strong>MOM.EXE</strong>
+                    <br>
+                    Creates new spectacles.
+                </div>
+
+                <div class="event">
+                    <strong>NEXT DAY</strong>
+                    <br>
+                    Saud finds the original spectacles.
+                </div>
+
+            </div>
+
+            <p style="margin-top:30px">
+
+                <strong>
+                    MEMORY STATUS:
+                </strong>
+
+                <br>
+
+                404 — Object permanence not found.
+
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- APPLE -->
+
+<section id="apple">
+
+    <div class="container">
+
+        <div class="apple">🍎</div>
+
+        <h2>WARNING</h2>
+
+        <div class="card">
+
+            <div class="danger">
+                APPLE DETECTED
+            </div>
+
+            <br>
+
+            <p>
+                The legendary codeword has been discovered.
+                <br><br>
+                Please do not look suspicious.
+                <br>
+                Your friend is already laughing.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- OCEAN -->
+
+<section id="ocean">
+
+    <div class="container">
+
+        <div class="water">🌊</div>
+
+        <h2>OCEAN DLC</h2>
+
+        <div class="card">
+
+            <p>
+
+                Saud has encountered the sea.
+
+                <br><br>
+
+                Saud's brain:
+
+                <br><br>
+
+                "What if I drown?"
+
+                <br><br>
+
+                Saud's relationship with the ocean:
+
+                <br>
+
+                <strong>
+                    IT'S COMPLICATED.
+                </strong>
+
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- KIDS -->
+
+<section id="kids">
+
+    <div class="container">
+
+        <h2>IMPORTANT QUESTION</h2>
+
+        <div class="card">
+
+            <p>
+                We have received reports that Saud
+                has had a difficult relationship with
+                certain noisy residents outside his house.
+            </p>
+
+            <br>
+
+            <p>
+                Therefore, on this special occasion,
+                we have only one thing to ask:
+            </p>
+
+            <button
+                class="kids-button"
+                onclick="askKids()"
+            >
+                HOW ARE YOUR KIDS? ❤️
+            </button>
+
+            <div id="kidsResponse"></div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- FRIENDSHIP -->
+
+<section id="friendship">
+
+    <div class="container">
+
+        <div class="heart">❤️</div>
+
+        <h2>OKAY, JOKES ASIDE</h2>
+
+        <div class="card">
+
+            <p>
+
+                Underneath all the chaos, the questionable
+                Pinterest activity, the missing spectacles,
+                the ocean fear and the completely unnecessary
+                Kim Ji Won collection...
+
+                <br><br>
+
+                You're genuinely a caring guy.
+
+                <br><br>
+
+                You literally print my college assignments
+                because I am incapable of reaching college
+                on time.
+
+                <br><br>
+
+                That is the kind of friend who deserves
+                to be appreciated.
+
+                <br><br>
+
+                So yes...
+
+                <br>
+
+                <strong>
+                    You're an idiot.
+                </strong>
+
+                <br><br>
+
+                But you're <strong>our</strong> idiot.
+
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- FINAL -->
+
+<section id="final">
+
+    <div class="container">
+
+        <div class="birthday">
+            HAPPY<br>
+            BIRTHDAY<br>
+            SAUD
+        </div>
+
+        <div class="final-message">
+
+            <p>
+
+                May your Pinterest storage survive another year.
+
+                <br><br>
+
+                May you never lose your spectacles
+                for an entire weekend again.
+
+                <br><br>
+
+                May you remain approximately
+                97% chaotic and 3% functional.
+
+                <br><br>
+
+                And most importantly...
+
+                <br><br>
+
+                May you continue being the genuinely
+                caring friend that you are.
+
+                <br><br>
+
+                Have an absolutely insane birthday,
+                <strong>Saud Makandar.</strong>
+
+            </p>
+
+        </div>
+
+        <button
+            class="restart"
+            onclick="location.reload()"
+        >
+            🔄 REBOOT SAUD.EXE
+        </button>
+
+    </div>
+
+</section>
+
+</div>
+
+
+<script>
+
+/* =========================
+   BOOT SEQUENCE
+========================= */
+
+const terminal = document.getElementById("terminal");
+const enterBtn = document.getElementById("enterBtn");
+const boot = document.getElementById("boot");
+const main = document.getElementById("main");
+
+const lines = [
+    "> Starting birthday_protocol.exe",
+    "> Loading Saud Makandar...",
+    "> Checking memory...",
+    "> WARNING: Memory capacity suspiciously low.",
+    "> Scanning Pinterest...",
+    "> WARNING: Kim Ji Won detected.",
+    "> Scanning oceanophobia...",
+    "> Ocean DLC unavailable.",
+    "> Searching for spectacles...",
+    "> ERROR: Spectacles location unknown.",
+    "> Checking Apple protocol...",
+    "> 🍎 DETECTED.",
+    "> Checking relationship with children...",
+    "> SYSTEM REFUSES TO COMMENT.",
+    "> Running friendship diagnostics...",
+    "> Result: Surprisingly wholesome.",
+    "> Birthday status: EXTREMELY ACTIVE.",
+    "> SYSTEM READY."
+];
+
+let line = 0;
+
+function printLine() {
+
+    if (line < lines.length) {
+
+        terminal.innerHTML +=
+            lines[line] +
+            "<br>";
+
+        line++;
+
+        setTimeout(printLine, 350);
+
+    } else {
+
+        terminal.innerHTML +=
+            "<br><span class='cursor'>█</span>";
+
+        enterBtn.style.display = "block";
+
+    }
+
+}
+
+printLine();
+
+
+enterBtn.addEventListener("click", () => {
+
+    boot.style.display = "none";
+    main.style.display = "block";
+
+    launchConfetti();
+
+});
+
+
+/* =========================
+   KIDS BUTTON
+========================= */
+
+let responses = [
+    "HE LOVES THEM. ❤️",
+    "Such beautiful children. 🥰",
+    "Saud is definitely not annoyed.",
+    "The children are doing GREAT apparently.",
+    "Bro said he wanted peace and quiet 😭",
+    "HOW ARE YOUR KIDS, SAUD?"
+];
+
+function askKids() {
+
+    const response =
+        document.getElementById("kidsResponse");
+
+    response.innerText =
+        responses[
+            Math.floor(
+                Math.random() * responses.length
+            )
+        ];
+
+}
+
+
+/* =========================
+   CONFETTI
+========================= */
+
+function launchConfetti() {
+
+    for (let i = 0; i < 180; i++) {
+
+        const confetti =
+            document.createElement("div");
+
+        confetti.className = "confetti";
+
+        confetti.style.left =
+            Math.random() * 100 + "vw";
+
+        confetti.style.background =
+            `hsl(${Math.random() * 360}, 100%, 60%)`;
+
+        confetti.style.animationDuration =
+            (Math.random() * 3 + 2) + "s";
+
+        confetti.style.animationDelay =
+            Math.random() * 2 + "s";
+
+        document.body.appendChild(confetti);
+
+        setTimeout(() => {
+            confetti.remove();
+        }, 6000);
+
+    }
+
+}
+
+
+/* =========================
+   RANDOM CHAOS
+========================= */
+
+document.addEventListener(
+    "keydown",
+    function(e) {
+
+        if (e.key.toLowerCase() === "k") {
+
+            alert(
+                "🚨 KIM JI WON DETECTED 🚨\n\n" +
+                "Pinterest contamination increasing."
+            );
+
+        }
+
+        if (e.key.toLowerCase() === "a") {
+
+            alert(
+                "🍎 APPLE PROTOCOL ACTIVATED 🍎"
+            );
+
+        }
+
+    }
+);
+
+</script>
+
+</body>
+</html>
